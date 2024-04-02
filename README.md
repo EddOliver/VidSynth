@@ -1,8 +1,10 @@
 # VidSynth: Real Time AI Video Generator
 
 <img src="https://i.ibb.co/PCWKPdj/VidSynth.png" width="1000">
+
+# Problem
  
-The lack of photo and video cameras that really use powerful AI algorithms, from segmentation to stable diffusion. There are several solutions right now that use AI to improve the image but not much to analyze it or to make changes in REAL TIME.
+There is a lack of photo and video cameras that really use powerful AI algorithms, from segmentation to stable diffusion. There are several solutions right now that use AI to improve the image but not much to analyze it or to make changes in REAL TIME.
 
 # Materials:
 
