@@ -46,7 +46,7 @@ At the same time, with OpenCV it is possible to recompose the original video onc
 
 <img src="https://i.ibb.co/HtQwbFf/Image.png" width="1000">
 
-# General Scheme:
+# General Schematic:
 
 <img src="https://i.ibb.co/2NjLjpk/Scheme-Vid-Synth.png" width="1000">
 
