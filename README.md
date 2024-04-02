@@ -1,6 +1,6 @@
 # VidSynth: Real Time AI Video Generator
 
-<img src="https://i.ibb.co/HF2PRKZ/VidSynth.png" width="1000">
+<img src="https://i.ibb.co/PCWKPdj/VidSynth.png" width="1000">
  
 The lack of photo and video cameras that really use powerful AI algorithms, from segmentation to stable diffusion. There are several solutions right now that use AI to improve the image but not much to analyze it or to make changes in REAL TIME.
 
@@ -24,7 +24,15 @@ https://code.visualstudio.com/
 
 # Introduction:
 
+En el mundo cada vez más digital, el consumo de contenido en video se ha vuelto una parte fundamental de nuestra rutina diaria. Muchas plataformas han transformado la forma en que consumimos información, entretenimiento y educación, ofreciendo una amplia gama de contenido que va desde tutoriales y vlogs hasta series y películas. 
 
+<img src="https://i.ibb.co/cLxJHTj/Image.png" width="1000">
+
+Sin emabargo con el avance de las GAI (generative artificial intelligence), ha permitido una revolucion en la forma de genera contenido, ya que ahora es posible generar imagenes, audios y videos de alta calidad desde la comodidad de tu hogar. Esto no solo democratiza la creación de contenido, permitiendo a personas con menos recursos acceder a herramientas de producción de alta calidad, sino que también abre nuevas posibilidades creativas al desafiar los límites de lo que es posible generar de manera automatizada. 
+
+<img src="https://i.ibb.co/9yqv3Ww/image.png" width="1000">
+
+Por eso hoy te presento VidSynth: Real Time AI Video Generator.
 
 # Solution:
 
@@ -74,11 +82,11 @@ Como primer paso tendremos que poner un jumper en el puerto FC y GND de los head
 
 Se uso el SDK Manager de Nvidia para faicilitar la instalacion del OS. Sin embargo este proceso debe de ser echo en una maquina linux, asi que recomiendo utilizar una maquina virtual con Ubuntu para realizar este proceso, **utilice VMware debido a que Virtual Box no funciono para este proceso**.
 
-<img src="https://i.ibb.co/K0WnK7Q/Screenshot-2024-03-14-190814.png" width="1000">
+<img src="https://i.ibb.co/6Zxspkz/Screenshot-2024-03-14-190814.png" width="1000">
 
 Es importante que este instalado el runtime de contenedores, sin el no podremos hacer funcionar el proyecto, ademas que el configurarlo manualmente puede ser muy complicado.
 
-<img src="https://i.ibb.co/4Zcpdfq/Image-13.png" width="1000">
+<img src="https://i.ibb.co/s1FnXd0/Image-13.png" width="1000">
 
 ## Software Setup:
 
@@ -144,7 +152,7 @@ Ya despues de estos comandos ya podremos utilizar las herramientas de Stable Dif
 
 Lo primero que tendremos que hacer para realizar la edicion de un video, sera bajar la carpeta [server](./server/) de este repositorio y pegarla en la Jetson Orin Nano.
 
-<img src="https://i.ibb.co/dkyfs0f/image.png" width="1000">
+<img src="https://i.ibb.co/7NJvN9w/Image.png" width="700">
 
 En esta carpeta ya tendremos todos los archivos necesarios para utilizar el proyecto, unicamente tendremos que entrar a la carpeta server y ejecutar el comando. Recomendaria revisar el archivo [docker-compose.yml](./server/docker-compose.yml) para revisar los detalles de ejecucion.
 
@@ -183,14 +191,14 @@ Una vez terminado el procesamiento, iremos denuevo al contenedor de OpenCV para 
 Y como resultado final obtenemos el siguiente video.
 
 Video: Click on the image
-[![Video](https://i.ibb.co/HF2PRKZ/VidSynth.png)](https://youtu.be/UIQUbunxXQQ)
+[![Video](https://i.ibb.co/PCWKPdj/VidSynth.png)](https://youtu.be/UIQUbunxXQQ)
 
 En este caso variando los parametros de conversion, el modelo e incluso la seed modificaremos el resultado del video generado, mejorandolo o empeorandolo, asi que modifica los parametros con el fin de obtener mejores resultados.
 
 ### Epic DEMO:
 
 Video: Click on the image
-[![Video](https://i.ibb.co/HF2PRKZ/VidSynth.png)](pending...)
+[![Video](https://i.ibb.co/PCWKPdj/VidSynth.png)](pending...)
 
 Sorry github does not allow embed videos.
 
@@ -207,5 +215,3 @@ Links:
 (2) https://github.com/dusty-nv/jetson-containers
 
 (3) https://huggingface.co/CompVis/stable-diffusion-v1-4
-
-(4) https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/
