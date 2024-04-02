@@ -26,23 +26,23 @@ https://code.visualstudio.com/
 
 # Introduction:
 
-En el mundo cada vez más digital, el consumo de contenido en video se ha vuelto una parte fundamental de nuestra rutina diaria. Muchas plataformas han transformado la forma en que consumimos información, entretenimiento y educación, ofreciendo una amplia gama de contenido que va desde tutoriales y vlogs hasta series y películas. 
+In the increasingly digital world, consuming video content has become a fundamental part of our daily routine. Many platforms have transformed the way we consume information, entertainment and education, offering a wide range of content ranging from tutorials and vlogs to series and movies.
 
 <img src="https://i.ibb.co/cLxJHTj/Image.png" width="1000">
 
-Sin emabargo con el avance de las GAI (generative artificial intelligence), ha permitido una revolucion en la forma de genera contenido, ya que ahora es posible generar imagenes, audios y videos de alta calidad desde la comodidad de tu hogar. Esto no solo democratiza la creación de contenido, permitiendo a personas con menos recursos acceder a herramientas de producción de alta calidad, sino que también abre nuevas posibilidades creativas al desafiar los límites de lo que es posible generar de manera automatizada. 
+However, with the advancement of GAI (generative artificial intelligence), it has allowed a revolution in the way content is generated, since it is now possible to generate high-quality images, audios and videos from the comfort of your home. This not only democratizes content creation, allowing people with fewer resources to access high-quality production tools, but also opens up new creative possibilities by challenging the limits of what is possible to generate in an automated way.
 
 <img src="https://i.ibb.co/9yqv3Ww/image.png" width="1000">
 
-Por eso hoy te presento VidSynth: Real Time AI Video Generator.
+That's why today I present to you VidSynth: Real Time AI Video Generator.
 
 # Solution:
 
-Realice una pequeña workstation mediante CLI que nos permite de forma sencilla realizar el proceso de pasar todas las images de un video en un modelo de stable diffusion como el SD-1.4.
+Create a small workstation using CLI that allows us to easily carry out the process of transferring all the images of a video into a stable diffusion model such as SD-1.4.
 
 <img src="https://i.ibb.co/mhG5sxC/image.png" width="1000">
 
-A su vez con OpenCV es posible realizar denuevo la composicion del video orginal una vez ha pasado por la red de stable diffusion.
+At the same time, with OpenCV it is possible to recompose the original video once it has passed through the stable diffusion network.
 
 <img src="https://i.ibb.co/HtQwbFf/Image.png" width="1000">
 
@@ -50,152 +50,152 @@ A su vez con OpenCV es posible realizar denuevo la composicion del video orginal
 
 <img src="https://i.ibb.co/2NjLjpk/Scheme-Vid-Synth.png" width="1000">
 
-- La funcion principal de la Jetson Orin Nano es ser el procesador CPU y GPU de mi proyecto.
+- The main function of the Jetson Orin Nano is to be the CPU and GPU processor of my project.
 
-- Como sistema operativo de la board utilice Jetpack 5.1.3, explicare mas adelante porque esta version.
+- As the board's operating system, I used Jetpack 5.1.3, I will explain later why this version.
 
-- Utilice el orquestador de contenedores nativo de Docker, Docker Compose Plugin.
+- Use Docker's native container orchestrator, Docker Compose Plugin.
 
-- Finalmente los contenedores que utilice fueron Stable Diffusion y OpenCV, los cuales estan compilados ya para la Jetson Nano Orin.
+- Finally, the containers I used were Stable Diffusion and OpenCV, which are already compiled for the Jetson Nano Orin.
 
 # Board Setup:
 
-Primero vamos a realizar el setup de la board y workspace para hacer funcionar correctamente los contenedores.
+First we are going to setup the board and workspace to make the containers work correctly.
 
 ## NVME SSD:
 
-Uno de lo requisitos previos a desplegar este prpyecto es realizar el setup de una SSD NVME en la Jetson Nano, debido a que mejorara el rendimiento de la trajeta.
+One of the prerequisites for deploying this project is to setup an NVME SSD in the Jetson Nano, because it will improve the performance of the card.
 
 <img src="https://i.ibb.co/6ZsZfRQ/20240330-190849.jpg" width="1000">
 
-La NVME tiene que ir colocada en el puerto correcto, igualmente puedes usar una trajeta NVME mini, pero su precio es bastante mas elevado que los SSD NVME tradicionales.
+The NVME has to be placed in the correct port, you can also use a mini NVME card, but its price is much higher than traditional NVME SSDs.
 
 <img src="https://i.ibb.co/nDYSJMH/20240330-190910.jpg" width="1000">
 
-Recuerda Revisar que el puerto sea de tipo M, cualquier otro tipo de puerto, no va a funcionar.
+Remember to check that the port is type M, any other type of port will not work.
 
 <img src="https://i.ibb.co/nQmVXPR/20240330-190939.jpg" width="1000">
 
 ## OS Setup and Flash:
 
-Como primer paso tendremos que poner un jumper en el puerto FC y GND de los headers traseros d ela trajeta, esto con el fin de que nos permita relizar correctamente el flash del OS.
+As a first step we will have to put a jumper in the FC and GND port of the rear headers of the card, this in order to allow us to correctly flash the OS.
 
 <img src="https://i.ibb.co/1Mk1zqK/20240330-191009.jpg" width="1000">
 
-Se uso el SDK Manager de Nvidia para faicilitar la instalacion del OS. Sin embargo este proceso debe de ser echo en una maquina linux, asi que recomiendo utilizar una maquina virtual con Ubuntu para realizar este proceso, **utilice VMware debido a que Virtual Box no funciono para este proceso**.
+Nvidia's SDK Manager was used to facilitate the installation of the OS. However, this process must be done on a Linux machine, so I recommend using a virtual machine with Ubuntu to carry out this process, **use VMware because Virtual Box did not work for this process**.
 
 <img src="https://i.ibb.co/6Zxspkz/Screenshot-2024-03-14-190814.png" width="1000">
 
-Es importante que este instalado el runtime de contenedores, sin el no podremos hacer funcionar el proyecto, ademas que el configurarlo manualmente puede ser muy complicado.
+It is important that the container runtime is installed, without it we will not be able to make the project work, and configuring it manually can be very complicated.
 
 <img src="https://i.ibb.co/s1FnXd0/Image-13.png" width="1000">
 
 ## Software Setup:
 
-Lo primero que tenemos que hacer una vez tenemos el sistema listo, es conectarnos por SSH a la board, particularmente con VScode manipular los contenedores de forma grafica es muy sencillo.
+The first thing we have to do once we have the system ready is to connect via SSH to the board, particularly with VScode, manipulating the containers graphically is very simple.
 
 <img src="https://i.ibb.co/dfYhd2S/image.png" width="1000">
 
-Ahora realizaremos la descarga e instalacion de los scripts necesarios para el funcionamiento de los contenedores.
+Now we will download and install the scripts necessary for the containers to function.
 
     sudo apt-get update && sudo apt-get install git python3-pip
     git clone --depth=1 https://github.com/dusty-nv/jetson-containers
     cd jetson-containers
     pip3 install -r requirements.txt
 
-Debido al tamaño de los modelos de Stable Diffusion, tendremos que crear una memoria swap con los siguientes comandos.
+Due to the size of the Stable Diffusion models, we will have to create a swap memory with the following commands.
 
     sudo systemctl disable nvzramconfig
     sudo fallocate -l 16G /mnt/16GB.swap
     sudo mkswap /mnt/16GB.swap
     sudo swapon /mnt/16GB.swap
 
-Ahora, en Jetpack 5.1.3 tenemos el problema que Docker no provee el script de Docker Compose, asi que tendremos que instalarlo manualmete.
+Now, in Jetpack 5.1.3 we have the problem that Docker does not provide the Docker Compose script, so we will have to install it manually.
 
-- Instalamos los keyrings oficiales de docker.
+- We install the official docker keyrings.
 
         sudo mkdir -p /etc/apt/keyrings
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
-- Agreamos docker al gestor de paquetes apt.
-
+- We add docker to the apt package manager.
+  
         sudo echo  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-- Finalmente instalamos el plugin de docker compose.
+- Finally we install the docker compose plugin.
 
         sudo apt update
         sudo apt install -y docker-compose-plugin
 
-Por ultimo, tendremos que agregar Docker a los User Group para evitar la necesidad de `sudo` al usar docker.
+Finally, we will have to add Docker to the User Groups to avoid the need to `sudo` when using docker.
 
     sudo usermod -aG docker $USER
 
 ## Containers Download and Run:
 
-Es bastante sencillo bajar los contenedores al correr el siguiente comando.
+It is quite simple to lower the containers by running the following command.
 
     cd jetson-containers
     ./run.sh $(./autotag opencv)
 
-Gracias a este comando bajaremos el contenedor de OpenCV.
+Thanks to this command we will download the OpenCV container.
 
 <img src="https://i.ibb.co/8sXSvLC/image.png" width="1000">
 
-Y de la misma forma bajaremos el contenedor de Stable Diffusion.
+And in the same way we will lower the Stable Diffusion container.
 
     cd jetson-containers
     ./run.sh $(./autotag stable-diffusion)
 
-Ya despues de estos comandos ya podremos utilizar las herramientas de Stable Diffusion y OpenCV sin problema.
+After these commands we can use the Stable Diffusion and OpenCV tools without problem.
 
 <img src="https://i.ibb.co/vwyTmd4/image.png" width="1000">
 
 # Video Creation:
 
-Lo primero que tendremos que hacer para realizar la edicion de un video, sera bajar la carpeta [server](./server/) de este repositorio y pegarla en la Jetson Orin Nano.
+The first thing we will have to do to edit a video will be to download the [server](./server/) folder from this repository and paste it into the Jetson Orin Nano.
 
 <img src="https://i.ibb.co/7NJvN9w/Image.png" width="700">
 
-En esta carpeta ya tendremos todos los archivos necesarios para utilizar el proyecto, unicamente tendremos que entrar a la carpeta server y ejecutar el comando. Recomendaria revisar el archivo [docker-compose.yml](./server/docker-compose.yml) para revisar los detalles de ejecucion.
+In this folder we will have all the files necessary to use the project, we will only have to enter the server folder and execute the command. I would recommend checking the file [docker-compose.yml](./server/docker-compose.yml) to review the execution details.
 
     docker compose up -d
 
-Este comando ejecutara los dos contenedores de OpenCV y Stable-Diffusion con todo configurado y listo para funcionar.
+This command will run the two OpenCV and Stable-Diffusion containers with everything configured and ready to go.
 
 <img src="https://i.ibb.co/hFyFstH/image.png" width="1000">
 
-Ya con ambos contenedores funcionando y conectados, vamos a realizar primero la conversion de un video a imagenes mediante OpenCV, dentro de la carpeta de input pondremos el video a editar, en este caso un vuelo de un drone. 
+With both containers working and connected, we are first going to convert a video to images using OpenCV, inside the input folder we will put the video to edit, in this case a drone flight.
 
 <img src="https://i.ibb.co/WH3t26M/image.png" width="1000">
 
-La conversion de video a imagenes se realiza con e siguiente comando.
+The conversion of video to images is done with the following command.
 
     python3 video2imgs.py
 
-Una vez ejecutado el comando todos los frames de el video estaran ahor en la carpeta framesin
+Once the command is executed, all the frames of the video will now be in the framesin folder
 
 <img src="https://i.ibb.co/SJphMn8/image.png" width="1000">
 
-Ahora que tenemos el video en frames, en el contenedor de Stable Diffusion ejecutaremos el siguiente comando, el cual iniciara el proceso de conversion de cada frame con el modelo de stable diffusion.
+Now that we have the video in frames, in the Stable Diffusion container we will execute the following command, which will start the conversion process of each frame with the stable diffusion model.
 
     python3 img2img.py --n_samples 1 --n_iter 1 --ddim_steps 40 --init-path /framesin --outdir /framesout --prompt "flying space ship, starwars, speed, racer, drone, space, cyberpunk, cyber, masterpiece,best quality,ultra high res,raw photo,beautiful lighting, realistic, photo-realistic, illustration, ultra-detailed, photorealistic, sharp focus, highly detailed, professional lighting, colorful details, iridescent colors, intricate details, 8k uhd, high quality, dramatic, cinematic" --strength 0.3 --seed 10000 --increase 0 &
 
-En este caso los invito a modificar los parametros de el comando para mejorar resultados, especialmente strength y prompt.
+In this case I invite you to modify the parameters of the command to improve results, especially strength and prompt.
 
 <img src="https://i.ibb.co/gFC9dkD/image.png" width="1000">
 
-Segun el modelo de jetson que tengas este proceso puede tardar mucho, recomendamos la Jetson Orin AGX como base para trabajar estos archivos de video.
+Depending on the Jetson model you have, this process may take a long time. We recommend the Jetson Orin AGX as a base to work with these video files.
 
-Una vez terminado el procesamiento, iremos denuevo al contenedor de OpenCV para realizar el procesamiento final de las imagenes generadas a un video.
+Once the processing is finished, we will go back to the OpenCV container to perform the final processing of the generated images into a video.
 
     python3 imgs2video.py
 
-Y como resultado final obtenemos el siguiente video.
+And as a final result we obtain the following video.
 
 Video: Click on the image
 [![Video](https://i.ibb.co/PCWKPdj/VidSynth.png)](https://youtu.be/UIQUbunxXQQ)
 
-En este caso variando los parametros de conversion, el modelo e incluso la seed modificaremos el resultado del video generado, mejorandolo o empeorandolo, asi que modifica los parametros con el fin de obtener mejores resultados.
+In this case, by varying the conversion parameters, the model and even the seed, we will modify the result of the generated video, improving or worsening it, so modify the parameters in order to obtain better results.
 
 ### Epic DEMO:
 
@@ -206,7 +206,7 @@ Sorry github does not allow embed videos.
 
 # Commentary:
 
-Este proyecto muestra la idea base de usar los modelos de stable diffusion para la creacion de videos, con modelos mejores como SD 2.0 o una tarjeta de desarrollo mejor, este proyecto puede funcionar mucho mejor debido al intenso procesamiento de GPU que requiere.
+This project shows the basic idea of using stable diffusion models for video creation, with better models like SD 2.0 or a better development card, this project can work much better due to the intense GPU processing it requires.
 
 ## References:
 
