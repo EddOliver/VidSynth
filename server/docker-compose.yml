@@ -1,0 +1,47 @@
+name: vidsynth
+services:
+  opencv:
+    build:
+      context: ./opencv
+      dockerfile: Dockerfile
+    runtime: nvidia
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - /tmp/argus_socket:/tmp/argus_socket
+      - /etc/enctune.conf:/etc/enctune.conf
+      - /etc/nv_tegra_release:/etc/nv_tegra_release
+      - /tmp/nv_jetson_model:/tmp/nv_jetson_model
+      - /var/run/dbus:/var/run/dbus
+      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/dok/jetson-containers/packages/llm/local_llm:/opt/local_llm/local_llm
+      - /home/dok/jetson-containers/data:/data
+      - ./opencv/app:/app
+    devices:
+      - /dev/snd
+      - /dev/bus/usb
+  stable-diffusion:
+    build:
+      context: ./sd
+      dockerfile: Dockerfile
+    runtime: nvidia
+    stdin_open: true
+    tty: true
+    network_mode: host
+    volumes:
+      - /tmp/argus_socket:/tmp/argus_socket
+      - /etc/enctune.conf:/etc/enctune.conf
+      - /etc/nv_tegra_release:/etc/nv_tegra_release
+      - /tmp/nv_jetson_model:/tmp/nv_jetson_model
+      - /var/run/dbus:/var/run/dbus
+      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/dok/jetson-containers/data:/data
+      - ./sd/app:/app
+      - ./opencv/app/framesin:/framesin
+      - ./opencv/app/framesout:/framesout
+    devices:
+      - /dev/snd
+      - /dev/bus/usb
